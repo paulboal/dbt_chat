@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: dim_patients
+    description: "A demographic dimension table for patients, incorporating key risk factors."
+    columns:
+      - name: patient_id
+        description: "The unique identifier for the patient."
+        tests:
+          - unique
+          - not_null
+      - name: is_high_risk_patient
+        description: >
+          Boolean flag indicating elevated risk. This is defined as any patient
+          aged 65 or older OR any patient enrolled in a Medicare-based plan.
+          This logic is key for utilization management reporting.
+
+  - name: fct_encounters
+    description: "A fact table detailing every clinical encounter or visit."
+    columns:
+      - name: primary_dx_code
+        description: "The ICD code assigned by the provider to represent the primary reason for the encounter."
+      - name: dx_group
+        description: >
+          A calculated classification of the diagnosis code (e.g., 'Preventive', 'Cardio/Respiratory').
+          The grouping logic is housed within the `get_dx_group` macro.
+      - name: days_since_last_encounter
+        description: "The number of days between the current encounter and the patient's previous encounter. Calculated using a window function partitioned by patient_id."

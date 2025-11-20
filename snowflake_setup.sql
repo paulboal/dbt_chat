@@ -1,0 +1,84 @@
+/*
+ * SETUP MOCK DATA
+ */
+
+-- 1. SET UP ROLES AND WAREHOUSE
+USE ROLE SYSADMIN; 
+CREATE OR REPLACE WAREHOUSE CIVIE_CORTEX_WH WITH WAREHOUSE_SIZE = 'XSMALL' AUTO_SUSPEND = 60;
+USE WAREHOUSE CIVIE_CORTEX_WH;
+
+-- 2. CREATE DATABASE AND SCHEMAS
+CREATE DATABASE IF NOT EXISTS CIVIE_CORTEX_DEMO;
+CREATE SCHEMA IF NOT EXISTS CIVIE_CORTEX_DEMO.RAW_DATA; -- Schema for source data
+CREATE SCHEMA IF NOT EXISTS CIVIE_CORTEX_DEMO.DBT_PROJECT; -- Schema for Git Repo and Cortex objects
+USE SCHEMA CIVIE_CORTEX_DEMO.RAW_DATA;
+
+-- 3. MOCK DATA: PATIENTS TABLE
+CREATE OR REPLACE TABLE PATIENTS (
+    PATIENT_ID VARCHAR,
+    DATE_OF_BIRTH DATE,
+    INSURANCE_PLAN VARCHAR,
+    PCP_ID VARCHAR
+);
+
+INSERT INTO PATIENTS (PATIENT_ID, DATE_OF_BIRTH, INSURANCE_PLAN, PCP_ID) VALUES
+('P-1001', '1955-03-15', 'MEDICARE ADVANTAGE', 'DR-1'), -- High Risk: Age & Medicare
+('P-1002', '1998-11-20', 'BLUE CROSS', 'DR-2'),
+('P-1003', '1938-01-01', 'CASH PAY', 'DR-3'), -- High Risk: Age only
+('P-1004', '2010-07-25', 'MEDICAID', 'DR-4');
+
+-- 4. MOCK DATA: ENCOUNTERS TABLE
+CREATE OR REPLACE TABLE ENCOUNTERS (
+    ENCOUNTER_ID VARCHAR,
+    PATIENT_ID VARCHAR,
+    ENCOUNTER_DATE DATE,
+    PROVIDER_ID VARCHAR,
+    PRIMARY_DX_CODE VARCHAR -- Diagnosis Code (ICD-10)
+);
+
+INSERT INTO ENCOUNTERS (ENCOUNTER_ID, PATIENT_ID, ENCOUNTER_DATE, PROVIDER_ID, PRIMARY_DX_CODE) VALUES
+('E-001', 'P-1001', '2025-01-10', 'DR-1', 'I50'), -- Cardio/Respiratory
+('E-002', 'P-1002', '2025-01-15', 'DR-2', 'V80'), -- Preventive
+('E-003', 'P-1001', '2025-03-01', 'DR-1', 'J45'), -- Cardio/Respiratory (second encounter)
+('E-004', 'P-1004', '2025-04-05', 'DR-4', 'E88'), -- Injury/Trauma
+('E-005', 'P-1003', '2025-05-20', 'DR-3', 'A01'); -- Other
+
+
+
+
+/*
+ * SETUP DBT FILE INDEXING
+ */
+
+ USE SCHEMA CIVIE_CORTEX_DEMO.DBT_PROJECT;
+
+-- 1. CREATE FILE FORMAT FOR READING TEXT
+CREATE OR REPLACE FILE FORMAT TEXT_FILE_FORMAT
+  TYPE = 'CSV'
+  FIELD_DELIMITER = NONE -- Treat the whole file as one field
+  RECORD_DELIMITER = NONE -- Allow the content to span multiple lines
+  SKIP_HEADER = 0;
+
+-- 2. CREATE FILE INDEXING TABLE
+-- This table will store the content of all your dbt files for indexing
+CREATE OR REPLACE TABLE dbt_file_index (
+    FILE_PATH VARCHAR,
+    FILE_CONTENT VARCHAR
+);
+
+-- 3. LOAD FILE CONTENTS FROM GIT REPOSITORY STAGE
+-- **CRITICAL STEP**: Replace '@hca_repo/branches/main/' with your actual path.
+-- We copy the content of SQL, YML, and MD files into the indexing table.
+COPY INTO dbt_file_index(FILE_PATH, FILE_CONTENT)
+FROM (
+    SELECT 
+        METADATA$FILENAME, 
+        $1 -- Content of the file
+    FROM @civie_repo/branches/main/ -- Replace with your actual Git Repository Stage
+    (file_format => 'TEXT_FILE_FORMAT')
+    WHERE METADATA$FILENAME ILIKE '%.sql'
+       OR METADATA$FILENAME ILIKE '%.yml'
+       OR METADATA$FILENAME ILIKE '%.md'
+);
+
+SELECT COUNT(*) FROM dbt_file_index; -- Verify files were loaded (should be 7)
