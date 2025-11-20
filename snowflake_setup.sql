@@ -100,10 +100,7 @@ LS @civie_dbt_repo/branches/main/;
 
 -- 1. CREATE FILE FORMAT FOR READING TEXT
 CREATE OR REPLACE FILE FORMAT TEXT_FILE_FORMAT
-  TYPE = 'CSV'
-  FIELD_DELIMITER = NONE -- Treat the whole file as one field
-  RECORD_DELIMITER = NONE -- Allow the content to span multiple lines
-  SKIP_HEADER = 0;
+  TYPE = 'CUSTOM';
 
 -- 2. CREATE FILE INDEXING TABLE
 -- This table will store the content of all your dbt files for indexing
