@@ -47,7 +47,7 @@ BEGIN
             ) t2 ON t1.FILENAME = t2.METADATA$FILENAME
         
     ) AS source
-    ON target.FILENAME = source.FILENAME
+    ON target.REPO_PATH = source.REPO_PATH
     WHEN MATCHED AND target.FILE_LAST_MODIFIED < source.FILE_LAST_MODIFIED THEN
         -- If the file content has changed, update the content
         UPDATE SET target.FILE_CONTENT = source.NEW_CONTENT
