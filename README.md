@@ -4,6 +4,10 @@ You've spent all this time creating dbt models with great documentation and test
 
 Snowflake Intelligence has the time to do all that!
 
+## Demo Walk Through
+
+[Click to watch a walkthrough Zoom recording](https://snowflake.zoom.us/rec/share/EZ6uUU34icNvb2w_Ydn4uG9yQVbnl2L9IUbetf4Uw2K4sy2NyZQ4UoyivcoYZ0tK.wlhPTMhlvlNEHt6S?startTime=1763739811000) | Email me for the passcode.
+
 ## Architecture Overview
 Components of this demo include a GitHub-hosted dbt project, Snowflake data platform, Cortex Search Service, and Cortex Agent interacting to power the dbt Chat demo.
 
