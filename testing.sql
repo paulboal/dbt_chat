@@ -1,0 +1,1 @@
+select * from dbt_file_index

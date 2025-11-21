@@ -24,5 +24,9 @@ models:
         description: >
           A calculated classification of the diagnosis code (e.g., 'Preventive', 'Cardio/Respiratory').
           The grouping logic is housed within the `get_dx_group` macro.
+      - name: place_of_service
+        description: "The code indicating the location where the encounter took place."
+      - name: pos_type
+        description: "A derived classification of the place of service code (e.g., 'Hospital', 'Ambulatory', 'Retail'). The logic is housed within the `get_place_of_service_type` macro."
       - name: days_since_last_encounter
         description: "The number of days between the current encounter and the patient's previous encounter. Calculated using a window function partitioned by patient_id."

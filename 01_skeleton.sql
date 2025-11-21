@@ -37,12 +37,13 @@ CREATE OR REPLACE TABLE ENCOUNTERS (
     PATIENT_ID VARCHAR,
     ENCOUNTER_DATE DATE,
     PROVIDER_ID VARCHAR,
-    PRIMARY_DX_CODE VARCHAR -- Diagnosis Code (ICD-10)
+    PRIMARY_DX_CODE VARCHAR, -- Diagnosis Code (ICD-10)
+    PLACE_OF_SERVICE VARCHAR
 );
 
-INSERT INTO ENCOUNTERS (ENCOUNTER_ID, PATIENT_ID, ENCOUNTER_DATE, PROVIDER_ID, PRIMARY_DX_CODE) VALUES
-('E-001', 'P-1001', '2025-01-10', 'DR-1', 'I50'), -- Cardio/Respiratory
-('E-002', 'P-1002', '2025-01-15', 'DR-2', 'V80'), -- Preventive
-('E-003', 'P-1001', '2025-03-01', 'DR-1', 'J45'), -- Cardio/Respiratory (second encounter)
-('E-004', 'P-1004', '2025-04-05', 'DR-4', 'E88'), -- Injury/Trauma
-('E-005', 'P-1003', '2025-05-20', 'DR-3', 'A01'); -- Other
+INSERT INTO ENCOUNTERS (ENCOUNTER_ID, PATIENT_ID, ENCOUNTER_DATE, PROVIDER_ID, PRIMARY_DX_CODE, PLACE_OF_SERVICE) VALUES
+('E-001', 'P-1001', '2025-01-10', 'DR-1', 'I50', 'C3411'), -- Cardio/Respiratory
+('E-002', 'P-1002', '2025-01-15', 'DR-2', 'V80', 'R1231'), -- Preventive
+('E-003', 'P-1001', '2025-03-01', 'DR-1', 'J45', 'H8766'), -- Cardio/Respiratory (second encounter)
+('E-004', 'P-1004', '2025-04-05', 'DR-4', 'E88', 'H8769'), -- Injury/Trauma
+('E-005', 'P-1003', '2025-05-20', 'DR-3', 'A01', 'R1231'); -- Other
