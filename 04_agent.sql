@@ -52,8 +52,8 @@ Your primary function is to answer developer and analyst questions about the dbt
 
   tool_resources:
     dbtProjectFiles:
-      name: "demo_cortex_demo.dbt_project.demo_dbt_rag_service"
+      name: "DEMO_CORTEX_DEMO.DBT_PROJECT.DEMO_DBT_RAG_SERVICE"
       max_results: "10"
       title_column: "REPO_PATH"
-      id_column: "FILE_PATH"
+      id_column: "FILENAME"
   $$;
