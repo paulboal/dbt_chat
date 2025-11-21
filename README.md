@@ -6,10 +6,15 @@ Snowflake Intelligence has the time to do all that!
 
 ## Demo Scenario
 
+## Prerequisites
+
+* Have a public github repository repository with a dbt project in it, similar to [this one](https://github.com/paulboal/dbt_demo)
+
 
 ## Setup
-* github repository with dbt project
-* git integration in Snowflake
-* Cortex Search
-* Cortex Agent
+1. [Database and Schema skeleton](01_skeleton.sql)
+2. [Git repo integration](02_git.sql) 
+3. [Cortex Search service setup](03_cortex.sql)
+4. [Cortex Agent](04_agent.sql)
+5. [Maintenance Scripts](05_maintenance.sql)
 
