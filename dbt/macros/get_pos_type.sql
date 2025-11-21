@@ -2,7 +2,7 @@
     CASE
         WHEN UPPER(SUBSTR({{ pos }}, 1, 1)) = 'H' THEN 'Hospital'
         WHEN UPPER(SUBSTR({{ pos }}, 1, 1)) IN ('C', 'A') THEN 'Ambulatory'
-        WHEN UPPER(SUBSTR({{ pos }}, 1, 1)) IN ('R', 'P') THEN 'Retail'
+        WHEN UPPER(SUBSTR({{ pos }}, 1, 1)) IN ('R', 'P', 'X') THEN 'Retail'
         ELSE 'Unknown'
     END
 {%- endmacro %}

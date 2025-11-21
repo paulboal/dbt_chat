@@ -36,15 +36,13 @@ CREATE OR REPLACE API INTEGRATION demo_git_api_integration
     -- IMPORTANT: Restrict this to your organization/repository URL for security.
     API_ALLOWED_PREFIXES = ('https://github.com/paulboal/') -- e.g., 'https://github.com/Snowflake-Labs/'
     -- Allow the integration to use the secret we created in step 1
-    -- ALLOWED_AUTHENTICATION_SECRETS = (demo_CORTEX_DEMO.DBT_PROJECT.demo_git_secret)
+    -- ALLOWED_AUTHENTICATION_SECRETS = (DEMO_CORTEX_DEMO.DBT_PROJECT.demo_git_secret)
     ENABLED = TRUE
     COMMENT = 'API Integration for dbt project Git connection.';
 
 
 -- 3. Create the GIT REPOSITORY Clone
--- Switch back to a development/admin role
-USE ROLE SYSADMIN; 
-USE SCHEMA demo_CORTEX_DEMO.DBT_PROJECT; 
+USE SCHEMA DEMO_CORTEX_DEMO.DBT_PROJECT; 
 
 CREATE OR REPLACE GIT REPOSITORY demo_dbt_repo
     ORIGIN = 'https://github.com/paulboal/dbt_chat.git' -- The full HTTPS URL of your dbt repo

@@ -23,8 +23,7 @@ CREATE OR REPLACE TABLE dbt_file_index (
     FILE_CONTENT VARCHAR
 );
 
--- 3. LOAD FILE CONTENTS FROM GIT REPOSITORY STAGE (CORRECTED COMMAND)
--- **CRITICAL STEP**: Use INSERT INTO ... SELECT FROM @STAGE instead of COPY INTO.
+-- 3. LOAD FILE CONTENTS FROM GIT REPOSITORY STAGE
 INSERT INTO dbt_file_index (FILENAME, FILE_LAST_MODIFIED, REPO_PATH, FILE_CONTENT)
 SELECT 
     METADATA$FILENAME AS FILENAME,
@@ -32,11 +31,11 @@ SELECT
     SPLIT_PART(METADATA$FILENAME, '/dbt/', 2) AS REPO_PATH,
     $1 AS FILE_CONTENT -- $1 contains the entire file content due to the file format settings
 FROM @demo_dbt_repo/branches/main/ -- Replace with your actual Git Repository Stage
-(file_format => 'TEXT_FILE_FORMAT')
-WHERE 
-    FILENAME ILIKE '%dbt/%.sql'
-    OR FILENAME ILIKE '%dbt/%.yml'
-    OR FILENAME ILIKE '%dbt/%.md';
+(FILE_FORMAT => 'TEXT_FILE_FORMAT',
+ PATTERN => 'dbt.*\.sql|dbt.*\.yml|dbt.*\.md') 
+ -- Only load dbt relevant files
+ -- Change this if your repository is laid out differently
+;
 
 
 -- #. GRANT CORTEX ACCESS (If not done already)

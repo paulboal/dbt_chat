@@ -41,7 +41,10 @@ BEGIN
             t2.$1 as NEW_CONTENT,
         FROM changed_files t1
         -- Join to the stage again to get the content of the file
-        JOIN @demo_dbt_repo/branches/main/ (FILE_FORMAT => 'TEXT_FILE_FORMAT') t2 ON t1.FILENAME = t2.METADATA$FILENAME
+        JOIN @demo_dbt_repo/branches/main/ 
+            (FILE_FORMAT => 'TEXT_FILE_FORMAT',
+             PATTERN => 'dbt.*\.sql|dbt.*\.yml|dbt.*\.md'
+            ) t2 ON t1.FILENAME = t2.METADATA$FILENAME
         
     ) AS source
     ON target.FILENAME = source.FILENAME
