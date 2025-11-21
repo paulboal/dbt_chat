@@ -4,7 +4,16 @@ You've spent all this time creating dbt models with great documentation and test
 
 Snowflake Intelligence has the time to do all that!
 
-## Demo Scenario
+## Architecture Overview
+Components of this demo include a GitHub-hosted dbt project, Snowflake data platform, Cortex Search Service, and Cortex Agent interacting to power the dbt Chat demo.
+
+![Architecture diagram](architecture.png)
+
+Key components:
+- GitHub repo containing dbt models, tests, and docs
+- Snowflake schema with git integration and dbt files automatically ingested into a table
+- Cortex Search Service indexing the dbt artifacts
+- Cortex Agent answering user queries using Cortex Search
 
 ## Prerequisites
 
