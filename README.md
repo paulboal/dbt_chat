@@ -15,6 +15,8 @@ Key components:
 - Cortex Search Service indexing the dbt artifacts
 - Cortex Agent answering user queries using Cortex Search
 
+[Original image source file.](https://lucid.app/lucidchart/432d19f9-0015-4c65-9a60-2344cc089d37/edit?viewport_loc=1224%2C-1929%2C2980%2C1540%2C0_0&invitationId=inv_fbadd4f5-b1a4-482a-a78c-776467058e30)
+
 ## Prerequisites
 
 * Have a public github repository repository with a dbt project in it, similar to [this one](https://github.com/paulboal/dbt_demo)
